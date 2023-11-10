@@ -8,7 +8,7 @@ namespace Game_Project
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
+        private Texture2D _texture;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -28,6 +28,7 @@ namespace Game_Project
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            _texture = Content.Load<Texture2D>("tanjiro");
         }
 
         protected override void Update(GameTime gameTime)
@@ -43,9 +44,12 @@ namespace Game_Project
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            _spriteBatch.Begin();
 
             // TODO: Add your drawing code here
+            _spriteBatch.Draw(_texture, new Vector2(0, 0), Color.White);
 
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
