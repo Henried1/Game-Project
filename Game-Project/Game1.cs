@@ -9,6 +9,7 @@ namespace Game_Project
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D _texture;
+        private Rectangle _deelRectangle;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -19,7 +20,7 @@ namespace Game_Project
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            _deelRectangle = new Rectangle(8,176 , 39, 43);
             base.Initialize();
         }
 
@@ -47,7 +48,7 @@ namespace Game_Project
             _spriteBatch.Begin();
 
             // TODO: Add your drawing code here
-            _spriteBatch.Draw(_texture, new Vector2(0, 0), Color.White);
+            _spriteBatch.Draw(_texture, new Vector2(0, 0),_deelRectangle, Color.White);
 
             _spriteBatch.End();
             base.Draw(gameTime);
