@@ -10,7 +10,7 @@ namespace Game_Project
         private SpriteBatch _spriteBatch;
         private Texture2D _texture;
         private Rectangle _deelRectangle;
-        private int schuifOp_X = 8;
+        private int schuifOp_X = 15;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -21,7 +21,7 @@ namespace Game_Project
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _deelRectangle = new Rectangle(schuifOp_X,176 , 39, 43);
+            _deelRectangle = new Rectangle(schuifOp_X,176 , 45, 48);
             base.Initialize();
         }
         // beweging 66-8
@@ -54,7 +54,7 @@ namespace Game_Project
             schuifOp_X += 58;
             if (schuifOp_X > 238)
             {
-                schuifOp_X = 8;
+                schuifOp_X = 15;
             }
             _deelRectangle.X = schuifOp_X;
             _spriteBatch.End();
