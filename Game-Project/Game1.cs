@@ -10,6 +10,7 @@ namespace Game_Project
         private SpriteBatch _spriteBatch;
         private Texture2D _texture;
         private Rectangle _deelRectangle;
+        private int schuifOp_X = 8;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -20,10 +21,11 @@ namespace Game_Project
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _deelRectangle = new Rectangle(8,176 , 39, 43);
+            _deelRectangle = new Rectangle(schuifOp_X,176 , 39, 43);
             base.Initialize();
         }
-
+        // beweging 66-8
+        //max 233 x 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -49,7 +51,12 @@ namespace Game_Project
 
             // TODO: Add your drawing code here
             _spriteBatch.Draw(_texture, new Vector2(0, 0),_deelRectangle, Color.White);
-
+            schuifOp_X += 58;
+            if (schuifOp_X > 238)
+            {
+                schuifOp_X = 8;
+            }
+            _deelRectangle.X = schuifOp_X;
             _spriteBatch.End();
             base.Draw(gameTime);
         }
