@@ -19,9 +19,9 @@ namespace Project
     {
         private Texture2D heroTexture;
         private Animation animation;
-        private Vector2 positie;
-        private Vector2 snelheid;
-        private Vector2 versnelling;
+        private Vector2 position;
+        private Vector2 speed;
+        private Vector2 acceleration;
         private Vector2 mouseVector;
         IinputReader inputReader;
         public Hero(Texture2D texture,KeyBoardReader reader)
@@ -32,9 +32,9 @@ namespace Project
             animation.AddFrame(new AnimationFrame(new Rectangle(73, 176, 45, 48)));
             animation.AddFrame(new AnimationFrame(new Rectangle(131, 176, 45, 48)));
             animation.AddFrame(new AnimationFrame(new Rectangle(189, 176, 45, 48)));
-            positie = new Vector2(10, 0);
-            snelheid = new Vector2(1, 0);
-            versnelling = new Vector2(0.1f, 0.1f);
+            position = new Vector2(10, 0);
+            speed = Vector2.Zero;
+            acceleration = new Vector2(0.1f, 0.1f);
             inputReader = reader;
 
 
@@ -46,8 +46,7 @@ namespace Project
 
 
             var direction = inputReader.ReadInput();
-            direction *= 4;
-            positie += direction;
+            Move(direction);
 
 
                 
@@ -60,34 +59,38 @@ namespace Project
            animation.Update(gameTime);
            
         }
-        private Vector2 GetMouseState()
+        private void Move(Vector2 direction)
         {
-            MouseState state = Mouse.GetState();
-            mouseVector = new Vector2(state.X, state.Y);
-            return mouseVector;
+            if (direction != Vector2.Zero)
+            {
+                speed += acceleration * direction;
+                speed = Limit(speed, 1f);
+                position += speed;
+
+            }
+            else
+            {
+                speed = Vector2.Zero;
+            }
+
+
+            Bounce();
+            Debug.WriteLine($"Current Position: {position}");
         }
-        private void Move(Vector2 mouse)
+        private void Bounce()
         {
-            var direction = Vector2.Add(mouse, -positie);
-            direction.Normalize();
-            direction = Vector2.Multiply(direction, 0.3f);
 
-            snelheid += direction;
-            snelheid = Limit(snelheid, 5);
-            positie += snelheid;
-
-            if (positie.X > 600 || positie.X < 0)
+            if (position.X > 600 || position.X < 0)
             {
-                snelheid.X *= -1;
-                versnelling.X *= -1;
+                speed.X *= -1;
+                acceleration.X *= -1;
             }
-            if (positie.Y > 400 || positie.Y < 0)
+            if (position.Y > 400 || position.Y < 0)
             {
-                snelheid.Y *= -1;
-                versnelling.Y *= -1;
+                speed.Y *= -1;
+                acceleration.Y *= -1;
 
             }
-            Debug.WriteLine($"Current Position: {positie}");
         }
         private Vector2 Limit(Vector2 v, float max)
         {
@@ -101,7 +104,7 @@ namespace Project
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(heroTexture, positie,animation.CurrentFrame.SourceRectangle  , Color.White);
+            spriteBatch.Draw(heroTexture, position,animation.CurrentFrame.SourceRectangle  , Color.White);
         }
 
     }
