@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Project.Input;
 using System;
 
 namespace Project
@@ -36,7 +37,7 @@ namespace Project
 
         private void InitializeGameObjects()
         {
-            hero = new Hero(_texture);
+            hero = new Hero(_texture,new KeyBoardReader());
         }
 
         protected override void Update(GameTime gameTime)

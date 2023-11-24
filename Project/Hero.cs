@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Project.animation;
+using Project.Input;
 using Project.interfaces;
+using Project.Interfaces;
 using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
@@ -21,7 +23,8 @@ namespace Project
         private Vector2 snelheid;
         private Vector2 versnelling;
         private Vector2 mouseVector;
-        public Hero(Texture2D texture)
+        IinputReader inputReader;
+        public Hero(Texture2D texture,KeyBoardReader reader)
         {
             heroTexture = texture;
             animation = new Animation();
@@ -32,16 +35,30 @@ namespace Project
             positie = new Vector2(10, 0);
             snelheid = new Vector2(1, 0);
             versnelling = new Vector2(0.1f, 0.1f);
-            
+            inputReader = reader;
 
 
 
         }
         public void Update(GameTime gameTime)
         {
+
+
+
+            var direction = inputReader.ReadInput();
+            direction *= 4;
+            positie += direction;
+
+
+                
+
+                
+
             
-           Move(GetMouseState());
+            
+          // Move(GetMouseState());
            animation.Update(gameTime);
+           
         }
         private Vector2 GetMouseState()
         {
