@@ -37,7 +37,7 @@ namespace Project
 
         private void InitializeGameObjects()
         {
-            hero = new Hero(_texture,new KeyBoardReader());
+            hero = new Hero(_texture,new KeyBoardReader(), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         }
 
         protected override void Update(GameTime gameTime)
