@@ -14,7 +14,11 @@ namespace Project.Input
         public Vector2 ReadInput()
         {
             var direction = Vector2.Zero;
+
             KeyboardState state = Keyboard.GetState();
+
+           
+            //movement
             if (state.IsKeyDown(Keys.Left))
                 direction = new Vector2(-1, 0);
             if (state.IsKeyDown(Keys.Right))
@@ -22,6 +26,14 @@ namespace Project.Input
         
             return direction;
         }
+
+        //attack
+        public bool attackPressed() 
+        {
+            KeyboardState state = Keyboard.GetState();
+            return state.IsKeyDown(Keys.A);
+        }
+     
        
     }
 }

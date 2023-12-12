@@ -20,6 +20,7 @@ namespace Project
         private Texture2D heroTexture;
         private Animation running;
         private Animation standing;
+        private Animation attack;
         private Vector2 position;
         private Vector2 speed;
         private Vector2 acceleration;
@@ -27,12 +28,14 @@ namespace Project
         private int screenWidth;
         private int screenHeight;
         private bool isAnimating;
+        private bool isAttacking;
         private int yOffset = 30;
         public Hero(Texture2D texture,KeyBoardReader reader, int screenWidth, int screenHeight)
         {
             heroTexture = texture;
             running = new Animation();
             standing = new Animation();
+            attack = new Animation();
             //running
             running.AddFrame(new AnimationFrame(new Rectangle(15, 176, 45, 48)));
             running.AddFrame(new AnimationFrame(new Rectangle(73, 176, 45, 48)));
@@ -40,6 +43,15 @@ namespace Project
             running.AddFrame(new AnimationFrame(new Rectangle(189, 176, 45, 48)));
             //standing
             standing.AddFrame(new AnimationFrame(new Rectangle(0, 0, 55,85)));
+
+            //attack
+
+            attack.AddFrame(new AnimationFrame(new Rectangle(15,402,50,47)));
+            attack.AddFrame(new AnimationFrame(new Rectangle(48, 402, 50, 47)));
+            attack.AddFrame(new AnimationFrame(new Rectangle(56, 402, 50, 47)));
+            
+
+
             position = new Vector2(10, 100);
             speed = Vector2.Zero;
             acceleration = new Vector2(0.1f, 0.1f);
@@ -54,32 +66,51 @@ namespace Project
         {
             var direction = inputReader.ReadInput();
 
-            // Check if any arrow key is pressed
+
+
             if (direction != Vector2.Zero)
             {
                 if (!isAnimating)
                 {
-                    // Start the animation only if it's not already started
-                    speed = Vector2.Zero;   
+                    speed = Vector2.Zero;
                     running.Start();
                     standing.Stop();
                     isAnimating = true;
                 }
-
                 Move(direction);
+
+            }
+            else if(inputReader.attackPressed())
+            {
+                if (!isAttacking)
+                {
+                    isAttacking = true;
+                    attack.Start();
+                    running.Stop();
+                    standing.Stop();
+                    isAnimating = true;
+                }
+               
             }
             else
             {
-                // Stop the animation if no arrow key is pressed
+                if (isAttacking)
+                {
+                    isAttacking = false;
+                    attack.Stop();
+                    running.Start();
+                }
                 standing.Start();
                 running.Stop();
+                attack.Stop();
                 isAnimating = false;
             }
 
             running.Update(gameTime);
             standing.Update(gameTime);
-
+            attack.Update(gameTime);
         }
+
         private void Move(Vector2 direction)
         {
             if (direction != Vector2.Zero)
@@ -99,6 +130,7 @@ namespace Project
 
 
             }
+         
             position += speed;
 
             bounce();
@@ -132,11 +164,17 @@ namespace Project
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (running.IsPlaying)
+            if (attack.IsPlaying)
+            {
+                spriteBatch.Draw(heroTexture, position + new Vector2(0, yOffset), attack.CurrentFrame.SourceRectangle, Color.White);
+
+            }
+            else if (running.IsPlaying)
             {
                 spriteBatch.Draw(heroTexture, position + new Vector2(0, yOffset), running.CurrentFrame.SourceRectangle, Color.White);
 
             }
+
             else
             {
                 spriteBatch.Draw(heroTexture, position, standing.CurrentFrame.SourceRectangle, Color.White);

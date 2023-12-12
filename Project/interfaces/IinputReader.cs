@@ -10,5 +10,6 @@ namespace Project.Interfaces
     public interface IinputReader
     {
         Vector2 ReadInput();
+        bool attackPressed();
     }
 }
